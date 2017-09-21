@@ -19,7 +19,7 @@ namespace MimeDetective
         {
             types = new List<FileType> {PDF, WORD, EXCEL, JPEG, ZIP, RAR, RTF, PNG, PPT, GIF, DLL_EXE, MSDOC,
                 BMP, DLL_EXE, ZIP_7z, ZIP_7z_2, GZ_TGZ, TAR_ZH, TAR_ZV, OGG, ICO, XML, MIDI, FLV, WAVE, DWG, LIB_COFF, PST, PSD,
-                AES, SKR, SKR_2, PKR, EML_FROM, ELF, TXT_UTF8, TXT_UTF16_BE, TXT_UTF16_LE, TXT_UTF32_BE, TXT_UTF32_LE };
+                AES, SKR, SKR_2, PKR, EML_FROM, ELF, TIF, TIFF, TXT_UTF8, TXT_UTF16_BE, TXT_UTF16_LE, TXT_UTF32_BE, TXT_UTF32_LE };
         }
 
         #region Constants
@@ -66,8 +66,13 @@ namespace MimeDetective
         public readonly static FileType JPEG = new FileType(new byte?[] { 0xFF, 0xD8, 0xFF }, "jpg", "image/jpeg");
         public readonly static FileType PNG = new FileType(new byte?[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }, "png", "image/png");
         public readonly static FileType GIF = new FileType(new byte?[] { 0x47, 0x49, 0x46, 0x38, null, 0x61 }, "gif", "image/gif");
-        public readonly static FileType BMP = new FileType(new byte?[] { 66, 77 }, "bmp", "image/gif");
+        // bmp altered from trunk via https://github.com/Muraad/Mime-Detective/issues/11
+        public readonly static FileType BMP = new FileType(new byte?[] { 0x42, 0x4D }, "bmp", "image/bmp"); 
         public readonly static FileType ICO = new FileType(new byte?[] { 0, 0, 1, 0 }, "ico", "image/x-icon");
+        // tiff format suppors 2 different headers; we'll use a constant for each (file extension can be tiff as well as tif
+        public readonly static FileType TIFF = new FileType(new byte?[] { 0x4D, 0x4D, 0x00, 0x2A}, "tif", "image/tiff");  // big-endian
+        public readonly static FileType TIF = new FileType(new byte?[] { 0x49, 0x49, 0x2A, 0x00 }, "tif", "image/tiff");  // little-endian
+
 
         #endregion
 
@@ -194,7 +199,7 @@ namespace MimeDetective
         ///     GetFileType(() => bytes); 
         ///     
         /// </remarks>
-        /// <param name="file">The FileInfo object.</param>
+        /// <param name="bytes">The FileInfo object.</param>
         /// <returns>FileType or null not identified</returns>
         public static FileType GetFileType(this byte[] bytes)
         {
@@ -207,7 +212,7 @@ namespace MimeDetective
         /// Return null in case when the file type is not identified. 
         /// Throws Application exception if the file can not be read or does not exist
         /// </summary>
-        /// <param name="file">The FileInfo object.</param>
+        /// <param name="stream">The FileInfo object.</param>
         /// <returns>FileType or null not identified</returns>
         public static FileType GetFileType(this Stream stream)
         {
@@ -252,6 +257,8 @@ namespace MimeDetective
         /// <param name="fileHeaderReadFunc">A function which returns the bytes found</param>
         /// <param name="fileFullName">If given and file typ is a zip file, a check for docx and xlsx is done</param>
         /// <returns>FileType or null not identified</returns>
+        /// <remarks>Altered per https://github.com/Muraad/Mime-Detective/issues/12 which appears to have
+        /// never been folded into main trunk.</remarks>
         public static FileType GetFileType(Func<byte[]> fileHeaderReadFunc, string fileFullName = "")
         {
             // if none of the types match, return null
@@ -260,31 +267,37 @@ namespace MimeDetective
             // read first n-bytes from the file
             byte[] fileHeader = fileHeaderReadFunc();
 
-            // checking if it's binary (not really exact, but should do the job)
-            // shouldn't work with UTF-16 OR UTF-32 files
-            if (!fileHeader.Any(b => b == 0))
+            // compare the file header to the stored file headers
+            foreach (FileType type in types)
             {
-                fileType = TXT;
-            }
-            else
-            {
-                // compare the file header to the stored file headers
-                foreach (FileType type in types)
+                int matchingCount = GetFileMatchingCount(fileHeader, type);
+                if (matchingCount == type.Header.Length)
                 {
-                    int matchingCount = GetFileMatchingCount(fileHeader, type);
-                    if (matchingCount == type.Header.Length)
-                    {
-                        // check for docx and xlsx only if a file name is given
-                        // there may be situations where the file name is not given
-                        // or it is unpracticable to write a temp file to get the FileInfo
-                        if (type.Equals(ZIP) && !String.IsNullOrEmpty(fileFullName))
-                            fileType = CheckForDocxAndXlsx(type, fileFullName);
-                        else
-                            fileType = type;    // if all the bytes match, return the type
+                    // check for docx and xlsx only if a file name is given
+                    // there may be situations where the file name is not given
+                    // or it is unpracticable to write a temp file to get the FileInfo
+                    if (type.Equals(ZIP) && !String.IsNullOrEmpty(fileFullName))
+                        fileType = CheckForDocxAndXlsx(type, fileFullName);
+                    else
+                        fileType = type;    // if all the bytes match, return the type
 
-                        break;
-                    }
+                    break;
                 }
+
+                if (fileType == null)
+                {
+                    // nothing found yet; maybe just plain text?
+                    // checking if it's binary (not really exact, but should do the job)
+                    // shouldn't work with UTF-16 OR UTF-32 files
+                    if (!fileHeader.Any(b => b == 0))
+                    {
+                        fileType = TXT;
+                    }
+
+                    // this would be the place to add detection based on file extension e.g. .csv
+
+                }
+
             }
             return fileType;
         }
