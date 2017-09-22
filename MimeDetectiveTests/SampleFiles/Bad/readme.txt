@@ -1,0 +1,1 @@
+These are files with purposefully WRONG extensions. To be used in testing to catch malicious upload attempts.
