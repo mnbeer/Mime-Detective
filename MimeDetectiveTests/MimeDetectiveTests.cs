@@ -108,6 +108,14 @@ namespace MimeDetectiveTests
             Assert.AreEqual("application/msword", mimeType.Mime);
         }
 
+        [TestMethod]
+        public void RtfTest()
+        {
+            var fileName = @"Blank RTF File.rtf";
+            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
+            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
+            Assert.AreEqual("application/rtf", mimeType.Mime);
+        }
 
         [TestMethod]
         public void PdfTest()
