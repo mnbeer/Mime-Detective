@@ -139,6 +139,15 @@ namespace MimeDetectiveTests
         }
 
         [TestMethod]
+        public void WavTest()
+        {
+            var fileName = @"chimes.wav";
+            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
+            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
+            Assert.AreEqual(@"audio/wav", mimeType.Mime);
+        }
+
+        [TestMethod]
         public void ZipTest()
         {
             var fileName = @"Blank RTF File.zip";
