@@ -39,8 +39,10 @@ namespace MimeDetective
         //don't add them to the list, as they will be 'subtypes' of the ZIP type
         public readonly static FileType WORDX = new FileType(new byte?[0], 512, "docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         public readonly static FileType EXCELX = new FileType(new byte?[0], 512, "xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        public readonly static FileType PPTX = new FileType(new byte?[0], 512, "pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
         public readonly static FileType ODT = new FileType(new byte?[0], 512, "odt", "application/vnd.oasis.opendocument.text");
         public readonly static FileType ODS = new FileType(new byte?[0], 512, "ods", "application/vnd.oasis.opendocument.spreadsheet");
+        
 
         // common documents
         public readonly static FileType RTF = new FileType(new byte?[] { 0x7B, 0x5C, 0x72, 0x74, 0x66, 0x31 }, "rtf", "application/rtf");
@@ -370,6 +372,8 @@ namespace MimeDetective
                     result = WORDX;
                 else if (zipFile.Entries.Any(e => e.FullName.StartsWith("xl/")))
                     result = EXCELX;
+                else if (zipFile.Entries.Any(e => e.FullName.StartsWith("ppt/")))
+                    result = PPTX;
                 else
                     result = CheckForOdtAndOds(result, zipFile);
             }

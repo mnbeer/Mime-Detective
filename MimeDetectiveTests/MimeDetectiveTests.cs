@@ -71,6 +71,25 @@ namespace MimeDetectiveTests
         }
 
         [TestMethod]
+        public void PowerPointPptxTest()
+        {
+            var fileName = @"Blank Power Point Presentation.pptx";
+            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
+            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
+            Assert.AreEqual("application/vnd.openxmlformats-officedocument.presentationml.presentation", mimeType.Mime);
+        }
+
+
+        [TestMethod]
+        public void PowerPointPptTest()
+        {
+            var fileName = @"Blank Power 1997-2003 Point Presentation.ppt";
+            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
+            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
+            Assert.AreEqual("application/mspowerpoint", mimeType.Mime);
+        }
+
+        [TestMethod]
         public void WordDocxTest()
         {
             var fileName = @"Sample blank Word Document.docx";
