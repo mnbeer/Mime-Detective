@@ -16,6 +16,8 @@ namespace MimeDetectiveTests
             _pathToFiles = assemblyPath.Substring(0, assemblyPath.LastIndexOf(@"\bin", StringComparison.Ordinal)) + @"\SampleFiles";
         }
 
+        #region "Test valid files"
+
         [TestMethod]
         public void BmpTest()
         {
@@ -137,6 +139,19 @@ namespace MimeDetectiveTests
         }
 
         [TestMethod]
+        public void ZipTest()
+        {
+            var fileName = @"Blank RTF File.zip";
+            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
+            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
+            Assert.AreEqual(@"application/x-compressed", mimeType.Mime);
+        }
+
+#endregion
+
+        #region Test bad/invalid files
+
+        [TestMethod]
         public void BadPngTest()
         {
             var fileName = @"Bad\ThreePageDummy.pdf.png";
@@ -153,6 +168,8 @@ namespace MimeDetectiveTests
             var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
             Assert.AreNotEqual("application/pdf", mimeType.Mime);
         }
+
+        #endregion
 
     }
 }

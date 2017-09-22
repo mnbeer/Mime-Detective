@@ -272,17 +272,16 @@ namespace MimeDetective
             // compare the file header to the stored file headers
             foreach (FileType type in types)
             {
+                FileType openOfficeFileType = null;
                 int matchingCount = GetFileMatchingCount(fileHeader, type);
                 if (matchingCount == type.Header.Length)
                 {
-                    // check for docx and xlsx only if a file name is given
+                    // check for Open Office formats (docx, xlsx, pptx) only if a file name is given
                     // there may be situations where the file name is not given
                     // or it is unpracticable to write a temp file to get the FileInfo
-                    if (type.Equals(ZIP) && !String.IsNullOrEmpty(fileFullName))
-                        fileType = CheckForDocxAndXlsx(type, fileFullName);
-                    else
-                        fileType = type;    // if all the bytes match, return the type
-
+                    if (type.Equals(ZIP) && !string.IsNullOrEmpty(fileFullName))
+                        openOfficeFileType = CheckForDocxAndXlsx(type, fileFullName);
+                    fileType = openOfficeFileType ?? type;
                     break;
                 }
 
