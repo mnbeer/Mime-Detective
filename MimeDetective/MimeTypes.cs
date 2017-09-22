@@ -63,15 +63,15 @@ namespace MimeDetective
         // graphics
         #region Graphics jpeg, png, gif, bmp, ico
 
-        public readonly static FileType JPEG = new FileType(new byte?[] { 0xFF, 0xD8, 0xFF }, "jpg", "image/jpeg");
+        public readonly static FileType JPEG = new FileType(new byte?[] { 0xFF, 0xD8, 0xFF }, "jpg", "image/jpeg", new[] { "jpeg" });
         public readonly static FileType PNG = new FileType(new byte?[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }, "png", "image/png");
         public readonly static FileType GIF = new FileType(new byte?[] { 0x47, 0x49, 0x46, 0x38, null, 0x61 }, "gif", "image/gif");
         // bmp altered from trunk via https://github.com/Muraad/Mime-Detective/issues/11
         public readonly static FileType BMP = new FileType(new byte?[] { 0x42, 0x4D }, "bmp", "image/bmp"); 
         public readonly static FileType ICO = new FileType(new byte?[] { 0, 0, 1, 0 }, "ico", "image/x-icon");
         // tiff format suppors 2 different headers; we'll use a constant for each (file extension can be tiff as well as tif
-        public readonly static FileType TIFF = new FileType(new byte?[] { 0x4D, 0x4D, 0x00, 0x2A}, "tif", "image/tiff");  // big-endian
-        public readonly static FileType TIF = new FileType(new byte?[] { 0x49, 0x49, 0x2A, 0x00 }, "tif", "image/tiff");  // little-endian
+        public readonly static FileType TIFF = new FileType(new byte?[] { 0x4D, 0x4D, 0x00, 0x2A}, "tif", "image/tiff", new[] { "tif" });  // big-endian
+        public readonly static FileType TIF = new FileType(new byte?[] { 0x49, 0x49, 0x2A, 0x00 }, "tif", "image/tiff", new[] { "tiff" });  // little-endian
 
 
         #endregion

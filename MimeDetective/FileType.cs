@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace MimeDetective
 {
@@ -17,6 +18,7 @@ namespace MimeDetective
         public int HeaderOffset { get; set; }
         public string Extension { get; set; }
         public string Mime { get; set; }
+        public string[] AlternateExtensions = new string[0];
 
         public FileType()
         {
@@ -44,6 +46,23 @@ namespace MimeDetective
         /// Takes the details of offset for the header
         /// </summary>
         /// <param name="header">Byte array with header.</param>
+        /// <param name="extension">String with extension.</param>
+        /// <param name="mime">The description of MIME.</param>
+        /// <param name="alternateExtensions">Other valid extensions (ex: jpeg in addition to jpg, tiff in addition to tif)</param>
+        public FileType(byte?[] header, string extension, string mime, string[] alternateExtensions)
+        {
+            this.Header = null;
+            this.Header = header;
+            this.Extension = extension;
+            this.Mime = mime;
+            this.AlternateExtensions = alternateExtensions;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileType"/> struct.
+        /// Takes the details of offset for the header
+        /// </summary>
+        /// <param name="header">Byte array with header.</param>
         /// <param name="offset">The header offset - how far into the file we need to read the header</param>
         /// <param name="extension">String with extension.</param>
         /// <param name="mime">The description of MIME.</param>
@@ -56,6 +75,24 @@ namespace MimeDetective
             this.Mime = mime;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileType"/> struct.
+        /// Takes the details of offset for the header
+        /// </summary>
+        /// <param name="header">Byte array with header.</param>
+        /// <param name="offset">The header offset - how far into the file we need to read the header</param>
+        /// <param name="extension">String with extension.</param>
+        /// <param name="mime">The description of MIME.</param>
+        /// <param name="alternateExtensions">Other valid extensions (ex: jpeg in addition to jpg, tiff in addition to tif)</param>
+        public FileType(byte?[] header, int offset, string extension, string mime, string[] alternateExtensions)
+        {
+            this.Header = null;
+            this.Header = header;
+            this.HeaderOffset = offset;
+            this.Extension = extension;
+            this.Mime = mime;
+            this.AlternateExtensions = alternateExtensions;
+        }
 
         public override bool Equals(object other)
         {
@@ -76,6 +113,22 @@ namespace MimeDetective
         public override string ToString()
         {
             return Extension;
+        }
+
+        public string[] ValidExtensions()
+        {
+            return new string[] {Extension}.Concat(AlternateExtensions).ToArray();
+        }
+
+        /// <summary>
+        /// Is the extension of this file type what we are looking for?
+        /// </summary>
+        /// <param name="expectedExtension"></param>
+        /// <returns></returns>
+        public bool IsValidExtension(string expectedExtension)
+        {
+            expectedExtension = expectedExtension.ToLower().Replace(".", "");
+            return ValidExtensions().Contains(expectedExtension);
         }
     }
 }
