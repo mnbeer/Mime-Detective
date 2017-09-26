@@ -61,20 +61,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SampleFiles\Bad\readme.txt" />
-    <Content Include="SampleFiles\Bad\ThreePageDummy.pdf.png" />
-    <Content Include="SampleFiles\logo.bmp" />
-    <Content Include="SampleFiles\logo.gif" />
-    <Content Include="SampleFiles\logo.jpg" />
-    <Content Include="SampleFiles\logo.png" />
-    <Content Include="SampleFiles\logo.tif" />
+    <Content Include="SampleFiles\Bad\test.pdf.png" />
+    <Content Include="SampleFiles\test.bmp" />
+    <Content Include="SampleFiles\test.gif" />
+    <Content Include="SampleFiles\test.jpg" />
+    <Content Include="SampleFiles\test.png" />
+    <Content Include="SampleFiles\test.tif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SampleFiles\Bad\logo.png.pdf" />
-    <None Include="SampleFiles\Sample blank Excel 1997-2003 Document.xls" />
-    <None Include="SampleFiles\Sample blank Excel Document.xlsx" />
-    <None Include="SampleFiles\Sample blank Word 1997-2003 Document.doc" />
-    <None Include="SampleFiles\Sample blank Word Document.docx" />
-    <None Include="SampleFiles\ThreePageDummy.pdf" />
+    <None Include="SampleFiles\Bad\test.png.pdf" />
+    <None Include="SampleFiles\test.xls" />
+    <None Include="SampleFiles\test.xlsx" />
+    <None Include="SampleFiles\test.doc" />
+    <None Include="SampleFiles\test.docx" />
+    <None Include="SampleFiles\test.pdf" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

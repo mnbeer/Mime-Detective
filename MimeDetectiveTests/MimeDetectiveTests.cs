@@ -21,139 +21,109 @@ namespace MimeDetectiveTests
         [TestMethod]
         public void BmpTest()
         {
-            var fileName = "logo.bmp";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("image/bmp", mimeType.Mime);
+            CoreTest("bmp", @"image/bmp");
         }
 
         [TestMethod]
         public void GifTest()
         {
-            var fileName = "logo.gif";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("image/gif", mimeType.Mime);
+            CoreTest("gif", @"image/gif");
         }
 
         [TestMethod]
         public void JpgTest()
         {
-            var fileName = "logo.jpg";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("image/jpeg", mimeType.Mime);
+            CoreTest("jpg", @"image/jpeg");
         }
 
         [TestMethod]
         public void TiffTest()
         {
-            var fileName = "logo.tif";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("image/tiff", mimeType.Mime);
+            CoreTest("tif", @"image/tiff");
         }
 
         [TestMethod]
         public void ExcelXlsxTest()
         {
-            var fileName = "Sample blank Excel Document.xlsx";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", mimeType.Mime);
+            CoreTest("xlsx", @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
 
         [TestMethod]
         public void ExcelXlsTest()
         {
-            var fileName = @"Sample blank Excel 1997-2003 Document.xls";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("application/excel", mimeType.Mime);
+            CoreTest("xls", @"application/excel");
         }
 
         [TestMethod]
         public void PowerPointPptxTest()
         {
-            var fileName = @"Blank Power Point Presentation.pptx";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("application/vnd.openxmlformats-officedocument.presentationml.presentation", mimeType.Mime);
+            CoreTest("pptx", @"application/vnd.openxmlformats-officedocument.presentationml.presentation");
         }
 
 
         [TestMethod]
         public void PowerPointPptTest()
         {
-            var fileName = @"Blank Power 1997-2003 Point Presentation.ppt";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("application/mspowerpoint", mimeType.Mime);
+            CoreTest("ppt", @"application/mspowerpoint");
         }
 
         [TestMethod]
         public void WordDocxTest()
         {
-            var fileName = @"Sample blank Word Document.docx";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("application/vnd.openxmlformats-officedocument.wordprocessingml.document", mimeType.Mime);
+            CoreTest("docx", @"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         }
-
 
         [TestMethod]
         public void WordDocTest()
         {
-            var fileName = @"Sample blank Word 1997-2003 Document.doc";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("application/msword", mimeType.Mime);
+            CoreTest("doc", @"application/msword");
+        }
+
+        //[TestMethod]
+        //public void MppTest()
+        //{
+        //    var fileName = @"test.mpp";
+        //    var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
+        //    var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
+        //    Assert.AreEqual("application/vnd.ms-project", mimeType.Mime);
+        //}
+
+
+        [TestMethod]
+        public void MsgTest()
+        {
+            CoreTest("msg", @"application/vnd.ms-outlook");
         }
 
         [TestMethod]
         public void RtfTest()
         {
-            var fileName = @"Blank RTF File.rtf";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("application/rtf", mimeType.Mime);
+            CoreTest("rtf", @"application/rtf");
         }
 
         [TestMethod]
         public void PdfTest()
         {
-            var fileName = @"ThreePageDummy.pdf";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("application/pdf", mimeType.Mime);
+            CoreTest("pdf", @"application/pdf");
         }
 
 
         [TestMethod]
         public void PngTest()
         {
-            var fileName = @"logo.png";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual("image/png", mimeType.Mime);
+            CoreTest("png", @"image/png");
         }
 
         [TestMethod]
         public void WavTest()
         {
-            var fileName = @"chimes.wav";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual(@"audio/wav", mimeType.Mime);
+            CoreTest("wav", @"audio/wav");
         }
 
         [TestMethod]
         public void ZipTest()
         {
-            var fileName = @"Blank RTF File.zip";
-            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
-            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
-            Assert.AreEqual(@"application/x-compressed", mimeType.Mime);
+            CoreTest("zip", @"application/x-compressed");
         }
 
 #endregion
@@ -163,7 +133,7 @@ namespace MimeDetectiveTests
         [TestMethod]
         public void BadPngTest()
         {
-            var fileName = @"Bad\ThreePageDummy.pdf.png";
+            var fileName = @"Bad\test.pdf.png";
             var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
             var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
             Assert.AreNotEqual("image/png", mimeType.Mime);
@@ -172,13 +142,22 @@ namespace MimeDetectiveTests
         [TestMethod]
         public void BadPdfTest()
         {
-            var fileName = @"Bad\logo.png.pdf";
+            var fileName = @"Bad\test.png.pdf";
             var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
             var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
             Assert.AreNotEqual("application/pdf", mimeType.Mime);
         }
 
         #endregion
+
+        void CoreTest(string extension, string expectedMimeType)
+        {
+            var fileName = $"test.{extension}";
+            var fileInfo = new FileInfo(Path.Combine(_pathToFiles, fileName));
+            var mimeType = MimeDetective.MimeTypes.GetFileType(fileInfo);
+            Assert.AreEqual(expectedMimeType, mimeType.Mime);
+            Assert.IsTrue(mimeType.IsValidExtension(Path.GetExtension(fileName)));
+        }
 
     }
 }

@@ -17,11 +17,11 @@ namespace MimeDetective
 
         static MimeTypes()
         {
-            types = new List<FileType> {PDF, WORD, EXCEL, JPEG, ZIP, RAR, RTF, PNG, PPT, GIF, DLL_EXE, MSDOC,
+            types = new List<FileType> {PDF, WORD, EXCEL, MSG, JPEG, ZIP, RAR, RTF, PNG, PPT, GIF, DLL_EXE, MSDOC,
                 BMP, DLL_EXE, ZIP_7z, ZIP_7z_2, GZ_TGZ, TAR_ZH, TAR_ZV, OGG, ICO, XML, MIDI, FLV, WAVE, DWG, LIB_COFF, PST, PSD,
                 AES, SKR, SKR_2, PKR, EML_FROM, ELF, TIF, TIFF, TXT_UTF8, TXT_UTF16_BE, TXT_UTF16_LE, TXT_UTF32_BE, TXT_UTF32_LE };
         }
-
+        
         #region Constants
 
         // file headers are taken from here:
@@ -34,6 +34,9 @@ namespace MimeDetective
         public readonly static FileType WORD = new FileType(new byte?[] { 0xEC, 0xA5, 0xC1, 0x00 }, 512, "doc", "application/msword");
         public readonly static FileType EXCEL = new FileType(new byte?[] { 0x09, 0x08, 0x10, 0x00, 0x00, 0x06, 0x05, 0x00 }, 512, "xls", "application/excel");
         public readonly static FileType PPT = new FileType(new byte?[] { 0xFD, 0xFF, 0xFF, 0xFF, null, 0x00, 0x00, 0x00 }, 512, "ppt", "application/mspowerpoint");
+        // MPP (MS Project file) header from a hex dump. Microsoft has not published standard and has no plans to.
+        // Format appears to match PPT and does have the standard MSDOC header
+        // public readonly static FileType MPP = new FileType(new byte?[] { 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1 }, 512, "mpp", "application/vnd.ms-project");
 
         //ms office and openoffice docs (they're zip files: rename and enjoy!)
         //don't add them to the list, as they will be 'subtypes' of the ZIP type
@@ -42,7 +45,12 @@ namespace MimeDetective
         public readonly static FileType PPTX = new FileType(new byte?[0], 512, "pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
         public readonly static FileType ODT = new FileType(new byte?[0], 512, "odt", "application/vnd.oasis.opendocument.text");
         public readonly static FileType ODS = new FileType(new byte?[0], 512, "ods", "application/vnd.oasis.opendocument.spreadsheet");
-        
+
+
+        // outlook .msg (email) file (header spells "RootEntry"
+        public readonly static FileType MSG = new FileType(new byte?[] { 0x52, 0x00, 0x6F, 0x00, 0X6F, 0x00, 0x74, 0x00,
+                                                                         0x20, 0x00, 0x45, 0x00, 0x6E, 0x00, 0x74, 0x00,
+                                                                         0x72, 0x00, 0x79, 0x00}, 512, "msg", "application/vnd.ms-outlook");
 
         // common documents
         public readonly static FileType RTF = new FileType(new byte?[] { 0x7B, 0x5C, 0x72, 0x74, 0x66, 0x31 }, "rtf", "application/rtf");
